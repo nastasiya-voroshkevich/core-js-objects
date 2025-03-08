@@ -126,8 +126,14 @@ function makeImmutable(obj) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  const str = [];
+  Object.keys(lettersObject).forEach((elem) => {
+    lettersObject[elem].forEach((el) => {
+      str[el] = elem;
+    });
+  });
+  return str.join('');
 }
 
 /**
@@ -144,8 +150,33 @@ function makeWord(/* lettersObject */) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  const arr25 = [];
+  const arr50 = [];
+  for (let i = 0; i < queue.length; i += 1) {
+    if (queue[i] === 25) {
+      arr25.push(queue[i]);
+    }
+    if (queue[i] === 50) {
+      if (arr25.length > 0) {
+        arr50.push(queue[i]);
+        arr25.splice(0, 1);
+      } else {
+        return true;
+      }
+    }
+    if (queue[i] === 100) {
+      if (arr50.length >= 1 && arr25.length >= 1) {
+        arr25.splice(0, 1);
+        arr50.splice(0, 1);
+      } else if (arr50.length < 1 && arr25.length >= 3) {
+        arr25.splice(0, 3);
+      } else if (arr50.length < 1 && arr25.length < 3) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 /**
@@ -189,8 +220,9 @@ function getJSON(obj) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const values = Object.values(JSON.parse(json));
+  return new proto.constructor(...values);
 }
 
 /**
